@@ -1,0 +1,125 @@
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">Team Expense!</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/">File Expenses</a>
+      </li>
+      {{#if isAdmin}}
+      <li class="nav-item">
+        <a class="nav-link" href="/users">Users</a>
+      </li>
+      {{/if}}
+      {{#if isAdmin}} 
+      <li class="nav-item">
+        <a class="nav-link" href="/teams">Teams</a>
+      </li>
+      {{/if}}
+      {{#if isSupervisor}}
+      <li class="nav-item">
+        <a class="nav-link" href="/teamProfile/{{user.teamId}}">Team Profile</a>
+      </li>
+      {{/if}}
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<br><br> 
+<h1>USER DASHBOARD: {{user.firstName}} {{user.lastName}}</h1>
+<br>
+{{#if flashSuccess}}
+<h6 class="alert alert-success">{{flashSuccess.[0]}}</h6>
+{{/if}}
+{{#if flashError}}
+<h6 class="alert alert-warning">{{flashError.[0]}}</h6>
+{{/if}}
+<br>  
+<a href="/addReq" class="btn btn-info float-right">Add an Expense Requisition</a>
+<br><br>  
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th>Current Budget</th>
+      <th>Total Encumbered</th>
+      <th>Total Spent</th>
+      <th>Remaining Balance</th>
+    </tr>
+  </thead>
+    <tr>
+      <td>{{user.budget}}</td>
+      <td>{{user.totalEncumbered}}</td>
+      <td>{{user.totalSpent}}</td>
+      <td>{{user.balance}}</td>
+    </tr>
+</table>
+<br><br>
+<h2>Requisitions</h2>
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th>Req Number</th>
+      <th>Funds Encumbered</th>
+      <th>Total Spent</th>
+      <th>Balance of Requisition</th>
+    </tr>
+  </thead>
+  {{#each requisition}}
+    <tr>
+      <td><a href="/editReq/{{this.id}}" class="btn btn-info" data-toggle="button">Edit</a></td>
+      <td><a href="/addReport/{{this.id}}" class="btn btn-secondary" data-toggle="button">Add Expense Report</a></td>
+      <td><a href="/deleteReq/{{this.id}}" class="btn btn-warning" data-toggle="button">Delete</a>
+      <td>{{this.id}}</td>
+      <td>{{this.encumbered}}</td>
+      <td>{{this.totalSpent}}</td>
+      <td>{{this.balance}}</td>
+   </tr>
+  {{/each}}
+</table> 
+<br><br>
+<h2>Expense Reports</h2>
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th></th>
+      <th></th>
+      <th class="align-middle">Requisition Number</th>
+      <th class="align-middle">Report Number</th>
+      <th class="align-middle">Total of Expenses</th>
+      <th class="align-middle">Airfare</th>
+      <th class="align-middle">Baggage</th>
+      <th class="align-middle">Lodging</th>
+      <th class="align-middle">Meals</th>
+      <th class="align-middle">Mileage</th>
+      <th class="align-middle">Car Rental</th>          
+      <th class="align-middle">Parking</th>
+      <th class="align-middle">Taxi</th>
+    </tr>
+  </thead>
+  {{#each report}}
+    <tr>
+      <td><a href="/editReport/{{this.id}}" class="btn btn-info" data-toggle="button">Edit</a></td>
+      <td><a href="/deleteReport/{{this.id}}" class="btn btn-warning" data-toggle="button">Delete</a>
+      <td>{{this.requisitionId}}</td>
+      <td>{{this.id}}</td>
+      <td>{{this.expenseTotal}}</td>
+      <td>{{this.airfare}}</td>
+      <td>{{this.baggage}}</td>
+      <td>{{this.lodging}}</td>
+      <td>{{this.meals}}</td>
+      <td>{{this.mileage}}</td>
+      <td>{{this.carRental}}</td>
+      <td>{{this.parking}}</td>
+      <td>{{this.taxi}}</td>
+    </tr>
+  {{/each}}
+</table>
+  

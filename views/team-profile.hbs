@@ -1,0 +1,106 @@
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">Team Expense!</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/">File Expenses</a>
+      </li>
+      {{#if isAdmin}}
+      <li class="nav-item">
+        <a class="nav-link" href="/users">Users</a>
+      </li>
+      {{/if}}
+      {{#if isAdmin}} 
+      <li class="nav-item">
+        <a class="nav-link" href="/teams">Teams</a>
+      </li>
+      {{/if}}
+      {{#if isSupervisor}}
+      <li class="nav-item">
+        <a class="nav-link" href="/teamProfile/{{user.teamId}}">Team Profile</a>
+      </li>
+      {{/if}}
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<br><br> 
+<h1>TEAM PROFILE: {{team.teamCode}} - {{team.teamName}}</h1>
+<br>
+{{#if flashes}}
+<h6 class="alert alert-warning">{{flashes.[0]}}</h6>
+{{/if}}
+<br>
+<table class="table table-striped">
+  <h4>Budget</h4>
+  <thead class="thead-dark">
+    <tr>
+      <th>Team Budget</th>
+      <th>Total Allocated</th>
+      <th>Total Expenses</th>
+      <th>Team Balance</th>
+    </tr>
+  </thead>
+    <tr>
+      <td>{{team.budget}}</td>
+      <td>{{team.totalAllocated}}</td>
+      <td>{{team.totalSpent}}</td>
+      <td>{{team.balance}}</td>
+   </tr>
+</table> 
+<br><br>
+<h4>Team Members</h4>
+<table class="table table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th></th>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>User Budget</th>
+      <th>Total Encumbered</th>
+      <th>Total Spent</th>
+      <th>User Balance</th>
+    </tr>
+  </thead>
+  {{#each teamUsers}}
+    <tr>
+      <td><a href="/editUser/{{this.id}}" class="btn btn-info" data-toggle="button">Edit Budget</a></td>
+      <td>{{this.id}}</td>
+      <td>{{this.firstName}} {{this.lastName}}</td>
+      <td>{{this.email}}</td>
+      <td>{{this.budget}}</td>
+      <td>{{this.totalEncumbered}}</td>
+      <td>{{this.totalSpent}}</td>
+      <td>{{this.balance}}</td>
+    </tr>
+  {{/each}}
+</table>
+<br><br>
+<h4>Requisitions</h4>
+<table class="table table-hover">
+  <thead class="thead-dark">
+    <tr>
+      <th>Expense Req Number</th>
+      <th>Start Date</th>
+      <th>Funds Encumbered</th>
+      <th>Total Spent</th>
+      <th>Balance of Requisition</th>
+    </tr>
+    </thead>
+  {{#each requisitions}}
+    <tr>
+      <td>{{this.id}}</td>
+      <td>{{this.departureDate}}</td>
+      <td>{{this.encumbered}}</td>
+      <td>{{this.totalSpent}}</td>
+      <td>{{this.balance}}</td>
+    </tr>
+  {{/each}}  
+</table>

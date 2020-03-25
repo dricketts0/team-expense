@@ -1,0 +1,84 @@
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">Team Expense!</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/">File Expenses</a>
+      </li>
+      {{#if isAdmin}}
+      <li class="nav-item">
+        <a class="nav-link" href="/users">Users</a>
+      </li>
+      {{/if}}
+      {{#if isAdmin}} 
+      <li class="nav-item">
+        <a class="nav-link" href="/teams">Teams</a>
+      </li>
+      {{/if}}
+      {{#if isSupervisor}}
+      <li class="nav-item">
+        <a class="nav-link" href="/teamProfile/{{user.teamId}}">Team Profile</a>
+      </li>
+      {{/if}}
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<br><br>
+<h1>LIST of USERS</h1>
+<br>
+{{#if flashSuccess}}
+<h6 class="alert alert-success">{{flashSuccess.[0]}}</h6>
+{{/if}}
+<br>
+<form action="/updateUsers" method ="post">
+<button class="btn btn-info float-right" type="submit">Submit</button>
+<br><br>
+  <table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Id</th>
+        <th>User Name</th>
+        <th>Employee Name</th>
+        <th>Role</th>
+        <th>Team</th>
+        <th>Supervisor Status</th>
+      </tr>
+    </thead>
+    {{#each users}}
+      <tr>
+        <input type="hidden" name="users[{{this.id}}][userId]" value="{{this.id}}"/>
+        <td>{{this.id}}</td>
+        <td><a href="/editUser/{{this.id}}">{{this.username}}</a></td>
+        <td><a href="/editUser/{{this.id}}">{{this.lastName}}, {{this.firstName}}</a></td>
+        <td> 
+          <select name="users[{{this.id}}][roleId]">
+            {{#each this.roles }}
+            <option value='{{this.id}}'{{#if this.selected}}selected{{/if}}>{{ this.name }}</option>
+            {{/each}}
+          </select>
+        </td>
+        <td>
+          <select name="users[{{this.id}}][teamId]">
+            {{#each this.teams }}
+            <option value='{{this.id}}'{{#if this.selected}}selected{{/if}}>{{ this.teamName }}</option>
+            {{/each}}
+          </select>
+        </td>
+        <td>
+          <select name="users[{{this.id}}][supervisorId]">
+            {{#each this.supervisors }}
+            <option value='{{this.id}}'{{#if this.selected}}selected{{/if}}>{{ this.positionTitle }}</option>
+            {{/each}}
+          </select>
+        </td>
+      </tr>
+    {{/each}}
+  </table> 
+</form>

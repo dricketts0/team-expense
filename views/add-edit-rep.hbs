@@ -1,0 +1,195 @@
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">Team Expense!</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/">File Expenses</a>
+      </li>
+      {{#if isAdmin}}
+      <li class="nav-item">
+        <a class="nav-link" href="/users">Users</a>
+      </li>
+      {{/if}}
+      {{#if isAdmin}} 
+      <li class="nav-item">
+        <a class="nav-link" href="/teams">Teams</a>
+      </li>
+      {{/if}}
+      {{#if isSupervisor}}
+      <li class="nav-item">
+        <a class="nav-link" href="/teamProfile/{{user.teamId}}">Team Profile</a>
+      </li>
+      {{/if}}
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<br><br> 
+<h1>{{#if report}}Edit Report {{else}} Add Report {{/if}}</h1>
+<br>
+{{#if flashes}}
+<h6 class="alert alert-warning">{{flashes.[0]}}</h6>
+{{/if}}
+<br>
+<div class="container-fluid">
+    <div class="form-group row text-center">
+        <div class="form-group col">
+            <label for="staticName" class="col-form-label">Name: </label>
+        </div>
+         <div class="form-group col">
+            <input readonly class="form-control-plaintext" id="staticName" value="{{user.firstName}} {{user.lastName}}"/>
+        </div>
+        <div class="form-group">
+            <label for="staticDept" class="col-form-label">Department: </label>    
+        </div>
+        <div class="form-group col">
+            <input readonly class="form-control-plaintext" id="staticDept" value="{{team.teamName}}"/>
+        </div>
+    
+        <div class="form-group col">
+            <label for="staticEmail" class="col-form-label">Email: </label>    
+        </div>
+        <div class="form-group col">
+            <input readonly class="form-control-plaintext" id="staticEmail" value="{{user.email}}"/>
+        </div>
+    </div>
+    <h5 class="alert alert-info"> Requisition# {{requisition.id}}</h5>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Encumbered Funds</th>
+                <th>Total Expenses</th>
+                <th>Remaining Balance</th>
+            </tr>
+            <tr>
+                <td>{{requisition.encumbered}}</td>
+                <td>{{requisition.totalSpent}}</td>
+                <td>{{requisition.balance}}</td>
+            </tr>
+        </thead>
+    </table>
+    <h5 class="alert alert-info">Purpose: {{requisition.purpose}}</h5>
+    <form>
+        <div class="form-group row">
+            <div class="form-group col-sm-2" align="right">
+                <label for="staticDepart" class="col-form-label">Event Date: </label>
+            </div>
+            <div class="form-group col-sm-4" align="left">
+                <input readonly class="form-control-plaintext" id="staticDepart" value="{{requisition.departureDate}}"/>
+            </div>
+             <div class="form-group col-sm-2" align="right">
+                <label for="staticDestination" class="col-form-label">Destination: </label>
+            </div>
+            <div class="form-group col-sm-4" align="left">
+                <input readonly class="form-control-plaintext" id="staticDestination" value="{{requisition.destination}}"/>
+            </div> 
+        </div>
+        <div class="form-group row">
+            <div class="form-group col-sm-2" align="right">
+                <label for="staticReturn" class="col-form-label">End Date: </label>
+            </div>
+            <div class="form-group col-sm-4" align="left">
+                <input readonly class="form-control-plaintext" id="staticReturn" value="{{requisition.returnDate}}"/>
+            </div> 
+            <div class="form-group col-sm-2" align="right">
+                <label for="staticDepartFrom" class="col-form-label">Departing From: </label>
+            </div>
+            <div class="form-group col-sm-4" align="left">
+                <input readonly class="form-control-plaintext" id="staticDepartFrom" value="{{requisition.departLocation}}"/>
+            </div>
+           
+        </div>
+        <div class="form-group row">
+            <div class="form-group col-sm-2" align="right">
+                <label for="staticObjectives" class="col-form-label">Objectives: </label>
+            </div>
+            <div class="form-group col-sm-10" align="center">
+                <textarea readonly class="form-control-plaintext" rows="5" id="staticObjectives">{{requisition.objectives}}</textarea>
+            </div>
+        </div>
+    </form>
+        
+    <h5 class="alert alert-info">Expenses to Edit</h5>
+    <form action="/submitExpenses" method="POST">
+        
+        <div class="form-group row">
+            
+            <div class="form-group col-sm-2" align="center">
+                <label for="airfareInput" class="col-form-label">Airfare</label>
+            </div>
+            <div class="form-group col-sm-3">
+                <input type="number" class="form-control" id="airfareInput" placeholder="0.00" value="{{report.airfare}}" min="0" step="0.01" name="airfare"/>
+            </div>
+            <div class="form-group col-sm-1"></div>
+            <div class="form-group col-sm-2" align="center">
+                <label for="mileageInput" class="col-form-label">Mileage</label>
+            </div>
+            <div class="form-group col-sm-3">
+                <input type="number" class="form-control" id="mileageInput" placeholder="0.00" value="{{report.mileage}}" min="0" step="0.01" name="mileage"/>
+            </div>
+            <div class="form-group col-sm-1"></div>
+        </div>
+        <div class="form-group row">
+            <div class="form-group col-sm-2" align="center">
+                <label for="baggageInput" class="col-form-label">Baggage</label>
+            </div>
+            <div class="form-group col-sm-3">
+                <input type="number" class="form-control" id="baggageInput" placeholder="0.00" value="{{report.baggage}}" min="0" step="0.01" name="baggage"/>
+            </div>
+            <div class="form-group col-sm-1"></div>
+            <div class="form-group col-sm-2" align="center">
+                <label for="carRentalInput" class="col-form-label">Car Rental</label>
+            </div>
+            <div class="form-group col-sm-3">
+                <input type="number" class="form-control" id="carRentalInput" placeholder="0.00" value="{{report.carRental}}" min="0" step="0.01" name="carRental"/>
+            </div>
+            <div class="form-group col-sm-1"></div>
+        </div>
+         <div class="form-group row">
+            <div class="form-group col-sm-2" align="center">
+                <label for="lodgingInput" class="col-form-label">Lodging</label>
+            </div>
+            <div class="form-group col-sm-3">
+                <input type="number" class="form-control" id="lodgingInput" placeholder="0.00" value="{{report.lodging}}" min="0" step="0.01" name="lodging"/>
+            </div>
+            <div class="form-group col-sm-1"></div>
+            <div class="form-group col-sm-2" align="center">
+                <label for="parkingInput" class="col-form-label">Parking</label>
+            </div>
+            <div class="form-group col-sm-3">
+                <input type="number" class="form-control" id="parkingInput" placeholder="0.00" value="{{report.parking}}" min="0" step="0.01" name="parking"/>
+            </div>
+            <div class="form-group col-sm-1"></div>
+        </div>
+         <div class="form-group row border-bottom">
+            <div class="form-group col-sm-2" align="center">
+                <label for="mealsInput" class="col-form-label">Meals</label>
+            </div>
+            <div class="form-group col-sm-3">
+                <input type="number" class="form-control" id="mealsInput" placeholder="0.00" value="{{report.meals}}" min="0" step="0.01" name="meals"/>
+            </div>
+            <div class="form-group col-sm-1"></div>
+            <div class="form-group col-sm-2" align="center">
+                <label for="taxiInput" class="col-form-label">Taxi</label>
+            </div>
+            <div class="form-group col-sm-3">
+                <input type="number" class="form-control" id="taxiInput" placeholder="0.00" value="{{report.taxi}}" min="0" step="0.01" name="taxi"/>
+            </div>
+            <div class="form-group col-sm-1"></div>
+            <br><br>
+        </div>
+        <input type="hidden" value="0" name="expenseTotal"/>
+        <input type="hidden" name="requisitionId" value="{{requisition.id}}" />
+        <input type="hidden" name="id" value="{{report.id}}"/>
+        <button type="submit" class="float-right" id="calculateButton">Calculate</button>
+    
+    </form>
+
+<br><br><br>
+</div>
